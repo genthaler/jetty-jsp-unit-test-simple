@@ -35,6 +35,3 @@ Some day I might go to the bother of trying both approaches against some truly h
 
 What I'd like, and this helps a bit, is true code coverage, &agrave; la Clover/Cobertura/Emma.
 I imagine it wouldn't be too hard to do code coverage against the generated servlet; but how to report that against the original JSP, preferably with pretty colours?
-
-
-asdf
