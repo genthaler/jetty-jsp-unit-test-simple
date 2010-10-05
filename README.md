@@ -33,5 +33,8 @@ Of course, after I'd put this together, and while googling to flesh out this art
 Needless to say, it does the same stuff. It seems to be using its own implementation of the Servlet API, so perhaps it's further from a real container than I'd like.
 Some day I might go to the bother of trying both approaches against some truly horrible JSPs.
 
-What I'd like, and this helps a bit, is true code coverage, ˆ l‡ Clover/Cobertura/Emma.
+What I'd like, and this helps a bit, is true code coverage, &agrave; la Clover/Cobertura/Emma.
 I imagine it wouldn't be too hard to do code coverage against the generated servlet; but how to report that against the original JSP, preferably with pretty colours?
+
+
+asdf
