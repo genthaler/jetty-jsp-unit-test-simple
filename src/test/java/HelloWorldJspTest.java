@@ -1,30 +1,63 @@
-import junit.framework.TestCase;
-
+import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.jasper.servlet.JspServlet;
-import org.mortbay.jetty.testing.HttpTester;
-import org.mortbay.jetty.testing.ServletTester;
+import org.apache.tomcat.InstanceManager;
+import org.apache.tomcat.SimpleInstanceManager;
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.http.HttpTester;
+import org.eclipse.jetty.server.LocalConnector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.junit.jupiter.api.Test;
 
-public class HelloWorldJspTest extends TestCase {
-	ServletTester tester = new ServletTester();
-	HttpTester request = new HttpTester();
-	HttpTester response = new HttpTester();
+import javax.servlet.jsp.JspFactory;
 
-	public void setUp() throws Exception {
-		tester.setResourceBase("./src/main/webapp");
-		tester.addServlet(JspServlet.class, "*.jsp");
-		tester.start();
 
-		request.setMethod("GET");
-		request.setVersion("HTTP/1.0");
-	}
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-	public void testIndex() throws Exception {
-		request.setURI("/hello-world.jsp");
-		response.parse(tester.getResponses(request.generate()));
 
-		assertTrue(response.getMethod() == null);
-		assertEquals(200, response.getStatus());
-		assertEquals("<html><body>Hello World</body></html>", response
-				.getContent());
-	}
+public class HelloWorldJspTest {
+
+    @Test
+    public void test() throws Exception {
+
+        Server server = new Server();
+
+        LocalConnector localConnector = new LocalConnector(server);
+        server.addConnector(localConnector);
+
+        ServletContextHandler context = new ServletContextHandler(server, "/");
+        context.setResourceBase("src/main/webapp");
+        context.addServlet(JspServlet.class, "*.jsp");
+        JspFactory.setDefaultFactory(new JspFactoryImpl());
+        context.addServlet(DefaultServlet.class, "*.html");
+        context.setWelcomeFiles(new String[]{"index.html", "index.jsp"});
+        context.setClassLoader(Thread.currentThread().getContextClassLoader());
+        context.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
+        context.setSessionHandler(new SessionHandler());
+
+        server.setHandler(context);
+        server.start();
+
+        HttpTester.Request request = HttpTester.newRequest();
+        request.put(HttpHeader.HOST, "localhost");
+        request.setMethod("GET");
+
+        request.setURI("/hello-world.jsp");
+        HttpTester.Response response =
+                HttpTester.parseResponse(HttpTester.from(localConnector.getResponse(request.generate())));
+
+        assertEquals(200, response.getStatus());
+        assertEquals("<html><body>Hello World</body></html>", response
+                .getContent());
+
+        request.setURI("/index.html");
+        response =
+                HttpTester.parseResponse(HttpTester.from(localConnector.getResponse(request.generate())));
+
+        assertEquals(200, response.getStatus());
+        assertEquals("<html><body>Hello World</body></html>", response
+                .getContent());
+    }
 }
