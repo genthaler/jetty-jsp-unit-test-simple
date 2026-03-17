@@ -20,7 +20,7 @@ Here are a few sites that helped me on my quest:
 - <a href="http://mojo.codehaus.org/jspc/">Maven JSP Compiler support</a>
 - <a href="http://docs.codehaus.org/display/JETTY/ServletTester">Jetty's ServletTester</a>
 
-<a href="http://jspunit.sf.net">JSPUnit</a> looks usable, but I want something closer to a "real" servet environment.
+<a href="http://jspunit.sf.net">JSPUnit</a> looks usable, but I want something closer to a "real" servlet environment.
 
 So, knowing how configurable Jetty is generally, and knowing how fast it is even when running as a full-blown container,
 I decided to see whether I could get <a href="http://docs.codehaus.org/display/JETTY/ServletTester">Jetty's ServletTester</a> to do the job.
