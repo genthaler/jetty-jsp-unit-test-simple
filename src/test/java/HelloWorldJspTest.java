@@ -1,17 +1,19 @@
 import org.apache.jasper.runtime.JspFactoryImpl;
-import org.apache.jasper.servlet.JspServlet;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.SimpleInstanceManager;
+import org.eclipse.jetty.ee8.jsp.JettyJspServlet;
+import org.eclipse.jetty.ee8.nested.SessionHandler;
+import org.eclipse.jetty.ee8.servlet.DefaultServlet;
+import org.eclipse.jetty.ee8.servlet.ServletContextHandler;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpTester;
 import org.eclipse.jetty.server.LocalConnector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspFactory;
+import java.nio.file.Files;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,12 +31,13 @@ public class HelloWorldJspTest {
 
         ServletContextHandler context = new ServletContextHandler(server, "/");
         context.setResourceBase("src/main/webapp");
-        context.addServlet(JspServlet.class, "*.jsp");
+        context.addServlet(JettyJspServlet.class, "*.jsp");
         JspFactory.setDefaultFactory(new JspFactoryImpl());
         context.addServlet(DefaultServlet.class, "*.html");
         context.setWelcomeFiles(new String[]{"index.html", "index.jsp"});
         context.setClassLoader(Thread.currentThread().getContextClassLoader());
         context.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
+        context.setAttribute(ServletContext.TEMPDIR, Files.createTempDirectory("jetty-jsp-test").toFile());
         context.setSessionHandler(new SessionHandler());
 
         server.setHandler(context);
