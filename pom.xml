@@ -7,23 +7,33 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>Jetty JSP unit test simple example</name>
 	<url>http://maven.apache.org</url>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.eclipse.jetty.ee8</groupId>
+                <artifactId>jetty-ee8-bom</artifactId>
+                <version>${jetty.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 	<dependencies>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-            <version>${jetty.version}</version>
+            <groupId>org.eclipse.jetty.ee8</groupId>
+            <artifactId>jetty-ee8-servlet</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>apache-jsp</artifactId>
-            <version>${jetty.version}</version>
-            <type>jar</type>
+            <groupId>org.eclipse.jetty.ee8</groupId>
+            <artifactId>jetty-ee8-apache-jsp</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>apache-jstl</artifactId>
-            <version>${jetty.version}</version>
-            <type>pom</type>
+            <groupId>org.eclipse.jetty.ee8</groupId>
+            <artifactId>jetty-ee8-glassfish-jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.ee8</groupId>
+            <artifactId>jetty-ee8-annotations</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -63,10 +73,9 @@
         </plugins>
     </build>
     <properties>
-        <jetty.version>10.0.26</jetty.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <jetty.version>12.1.7</jetty.version>
+        <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <slf4j.version>2.0.5</slf4j.version>
+        <slf4j.version>2.0.17</slf4j.version>
     </properties>
 </project>
